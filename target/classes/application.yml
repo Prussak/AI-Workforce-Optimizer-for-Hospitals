@@ -1,0 +1,79 @@
+# ===================================================
+# AI Workforce Optimizer - Application Configuration
+# ===================================================
+
+spring:
+  application:
+    name: ai-workforce-optimizer
+
+  # H2 in-memory database for development/demo
+  datasource:
+    url: jdbc:h2:mem:hospitaldb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # PostgreSQL configuration (uncomment for production)
+  # datasource:
+  #   url: jdbc:postgresql://localhost:5432/hospital_optimizer
+  #   username: ${DB_USERNAME:postgres}
+  #   password: ${DB_PASSWORD:postgres}
+  # jpa:
+  #   database-platform: org.hibernate.dialect.PostgreSQLDialect
+  #   hibernate:
+  #     ddl-auto: update
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:VerySecretKeyForHospitalOptimizerApplicationThatIsLongEnough256Bits}
+  expiration: 86400000  # 24 hours in ms
+  refresh-expiration: 604800000  # 7 days in ms
+
+# Application-specific settings
+hospital:
+  scheduling:
+    min-rest-hours-between-shifts: 11
+    max-hours-per-week: 60
+    max-consecutive-days: 6
+    fatigue-score-threshold: 75.0
+    night-shift-weight: 1.5
+    long-shift-weight: 1.3
+  forecasting:
+    lookback-days: 90
+    seasonal-weight: 0.3
+    trend-weight: 0.4
+    emergency-surge-multiplier: 1.25
+
+# Server
+server:
+  port: 8080
+  error:
+    include-message: always
+
+# Logging
+logging:
+  level:
+    com.hospital.optimizer: DEBUG
+    org.springframework.security: INFO
+
+# OpenAPI Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
